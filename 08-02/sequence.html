@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sequence Game</title>
+    <link rel="stylesheet" href=sequence.css>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 20px;
+        }
+
+        .game-board {
+            display: grid;
+            grid-template-columns: repeat(3, 100px);
+            gap: 5px;
+        }
+
+        .game-cell {
+            width: 100px;
+            height: 100px;
+            border: 2px solid #ccc;
+            cursor: pointer;
+        }
+
+        .selected {
+            background-color: #add8e6; /* Light blue */
+        }
+
+        .clicked {
+            background-color: #f0e68c; /* Khaki */
+        }
+
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            margin: 10px;
+        }
+    </style>
+</head>
+<body>
+
+<h1>Sequence Game</h1>
+<p>Click cells in sequence:</p>
+
+<div class="game-board" id="game-board"></div>
+<button id="startButton" onclick="startGame()">Start Level</button>
+<button id="nextLevelButton" onclick="nextLevel()" style="display: none;">Next Level</button>
+
+<script>
+    var sequence = [];
+    var currentStep = 0;
+    var currentLevel = 1;
+
+    function generateSequence() {
+        sequence = [];
+        for (let i = 0; i < currentLevel; i++) {
+            sequence.push(Math.floor(Math.random() * 9) + 1);
+        }
+    }
+
+    function displaySequence() {
+        let delay = 1000; // milliseconds
+        sequence.forEach((cell, index) => {
+            setTimeout(() => {
+                highlightCell(cell);
+            }, delay * index);
+        });
+
+        setTimeout(() => {
+            alert(`Level ${currentLevel}: Remember the sequence!`);
+            resetBoard();
+            showStartButton();
+        }, delay * sequence.length);
+    }
+
+    function highlightCell(cell) {
+        const cellElement = document.getElementById(`cell-${cell}`);
+        if (cellElement) {
+            cellElement.classList.add('selected');
+            setTimeout(() => {
+                cellElement.classList.remove('selected');
+            }, 500);
+        }
+    }
+
+    function checkClick(cell) {
+        const cellElement = document.getElementById(`cell-${cell}`);
+        if (cellElement) {
+            cellElement.classList.add('clicked');
+            setTimeout(() => {
+                cellElement.classList.remove('clicked');
+            }, 300);
+        }
+
+        if (cell === sequence[currentStep]) {
+            currentStep++;
+            if (currentStep === sequence.length) {
+                alert(`Level ${currentLevel} completed!`);
+                currentLevel++;
+                showNextLevelButton();
+            }
+        } else {
+            alert(`Incorrect! You reached Level ${currentLevel}. Try again.`);
+            currentLevel = 1;
+            showStartButton();
+        }
+    }
+
+    function createGameBoard() {
+        const gameBoard = document.getElementById('game-board');
+        gameBoard.innerHTML = '';
+
+        for (let i = 1; i <= 9; i++) {
+            const cell = document.createElement('div');
+            cell.id = `cell-${i}`;
+            cell.className = 'game-cell';
+
+            cell.addEventListener('click', function () {
+                checkClick(i);
+            });
+
+            gameBoard.appendChild(cell);
+        }
+    }
+
+    function startGame() {
+        hideStartButton();
+        alert(`Get ready to start Level ${currentLevel}!`);
+        generateSequence();
+        currentStep = 0;
+        displaySequence();
+    }
+
+    function showStartButton() {
+        document.getElementById('startButton').style.display = 'block';
+    }
+
+    function hideStartButton() {
+        document.getElementById('startButton').style.display = 'none';
+    }
+
+    function showNextLevelButton() {
+        document.getElementById('nextLevelButton').style.display = 'block';
+    }
+
+    function hideNextLevelButton() {
+        document.getElementById('nextLevelButton').style.display = 'none';
+    }
+
+    function nextLevel() {
+        hideNextLevelButton();
+        startGame();
+    }
+
+    function resetBoard() {
+        const gameCells = document.getElementsByClassName('game-cell');
+        Array.from(gameCells).forEach(cell => cell.classList.remove('selected', 'clicked'));
+    }
+
+    createGameBoard();
+</script>
+
+</body>
+</html>

@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Random Arithmetic Test</title>
+<link rel="stylesheet" href="cg.css">
+<style>
+    button {
+        padding: 10px 20px;
+        font-size: 16px;
+        cursor: pointer;
+    }
+</style>
+</head>
+<body>
+
+<div id="question"></div>
+<br>
+<input type="text" id="answer" placeholder="Enter your answer">
+<br>
+<button onclick="checkAnswer()">Check Answer</button>
+<p id="result"></p>
+<button onclick="stopTest()">Stop Test</button>
+<p id="timer">Time taken: 0 seconds</p>
+
+<script>
+    var intervalId;
+    var startTime;
+    var gameDuration = 30 * 1000; // 30 seconds
+    var correctAnswers = 0;
+    var incorrectAnswers = 0;
+
+    function generateQuestion() {
+        var num1 = Math.floor(Math.random() * 100);
+        var num2 = Math.floor(Math.random() * 100);
+        var operator = ['+', '-', '*', '/'][Math.floor(Math.random() * 4)];
+
+        document.getElementById("question").textContent = num1 + ' ' + operator + ' ' + num2;
+        startTime = new Date().getTime();
+        clearInterval(intervalId);
+        intervalId = setInterval(updateTimer, 1000);
+
+        setTimeout(stopTest, gameDuration);
+    }
+
+    function updateTimer() {
+        var currentTime = new Date().getTime();
+        var elapsedTime = (currentTime - startTime) / 1000;
+        document.getElementById("timer").textContent = "Time taken: " + elapsedTime + " seconds";
+    }
+
+    function checkAnswer() {
+        var questionText = document.getElementById("question").textContent;
+        var [num1, operator, num2] = questionText.split(' ');
+
+        var answer;
+        switch (operator) {
+            case '+':
+                answer = (parseFloat(num1) + parseFloat(num2)).toFixed(2);
+                break;
+            case '-':
+                answer = (parseFloat(num1) - parseFloat(num2)).toFixed(2);
+                break;
+            case '*':
+                answer = (parseFloat(num1) * parseFloat(num2)).toFixed(2);
+                break;
+            case '/':
+                answer = (parseFloat(num1) / parseFloat(num2)).toFixed(2);
+                break;
+            default:
+                answer = NaN;
+                break;
+        }
+
+        var userAnswer = parseFloat(document.getElementById("answer").value);
+
+        if (isNaN(answer) || isNaN(userAnswer)) {
+            document.getElementById("result").textContent = "Invalid input. Please enter valid numbers.";
+        } else if (answer == userAnswer) { // Using loose equality to allow string and number comparison
+            document.getElementById("result").textContent = "Correct!";
+            correctAnswers++;
+        } else {
+            document.getElementById("result").textContent = "Incorrect. The correct answer is: " + answer;
+            incorrectAnswers++;
+        }
+    }
+
+    function stopTest() {
+        clearInterval(intervalId);
+        document.getElementById("question").textContent = "Game Over!";
+        document.getElementById("result").textContent = "Correct Answers: " + correctAnswers + ", Incorrect Answers: " + incorrectAnswers;
+        document.getElementById("timer").textContent = "Congratulations! you answered" + correctAnswers + "Questions";
+    }
+</script>
+
+<button onclick="generateQuestion()">Start Test</button>
+
+</body>
+</html>

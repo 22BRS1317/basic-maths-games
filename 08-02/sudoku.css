@@ -1,0 +1,49 @@
+body {
+    font-family: Arial, sans-serif;
+    text-align: center;
+    margin: 20px;
+    perspective: 1000px; /* Add perspective */
+    background: linear-gradient(120deg, #ff0000, #00ff00, #0000ff); /* Red, Green, Blue */
+    background-size: 500% 500%;
+    animation: gradientBG 15s ease infinite, rotateBG 20s linear infinite;
+}
+
+@keyframes gradientBG {
+    0% {
+        background-position: 0% 50%;
+    }
+    50% {
+        background-position: 100% 50%;
+    }
+    100% {
+        background-position: 0% 50%;
+    }
+
+}
+
+h1 {
+    margin-bottom: 20px;
+}
+
+table {
+    border-collapse: collapse;
+    margin: auto;
+    transform-style: preserve-3d; /* Preserve 3D transformations */
+}
+
+td {
+    width: 30px;
+    height: 30px;
+    text-align: center;
+    border: 1px solid #ccc;
+    font-size: 16px;
+    transform-style: preserve-3d; /* Preserve 3D transformations */
+}
+
+.input-cell {
+    background-color: #fff;
+}
+
+.input-cell.selected {
+    background-color: #add8e6; /* Light blue */
+}

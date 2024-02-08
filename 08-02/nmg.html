@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Number Memory Game</title>
+<link rel="stylesheet"href=nmg.css>
+<style>
+    button {
+        padding: 10px 20px;
+        font-size: 16px;
+        cursor: pointer;
+    }
+</style>
+</head>
+<body>
+
+<div id="game">
+    <h2>Number Memory Game</h2>
+    <button id="startBtn" onclick="startGame()">Start</button>
+    <p id="level" style="display: none;">Level: <span id="levelValue">1</span></p>
+    <p id="sequence"></p>
+    <input type="text" id="userInput" placeholder="Enter the sequence" style="display: none;">
+    <button onclick="checkSequence()" id="checkBtn" style="display: none;">Check Sequence</button>
+    <p id="result"></p>
+</div>
+
+<script>
+    var levels = 18;
+    var currentLevel = 1;
+    var sequence = [];
+    var userInputIndex = 0;
+
+    function startGame() {
+        document.getElementById("level").style.display = "block";
+        document.getElementById("levelValue").textContent = currentLevel;
+        document.getElementById("sequence").textContent = "";
+        document.getElementById("userInput").value = "";
+        document.getElementById("result").textContent = "";
+        document.getElementById("startBtn").style.display = "none";
+        generateSequence();
+    }
+
+    function generateSequence() {
+        sequence = [];
+        for (var i = 0; i < currentLevel; i++) {
+            sequence.push(Math.floor(Math.random() * 10));
+        }
+        document.getElementById("sequence").textContent = "Remember this sequence: " + sequence.join('');
+        userInputIndex = 0;
+
+        setTimeout(function() {
+            document.getElementById("sequence").textContent = "";
+            document.getElementById("userInput").style.display = "block";
+            document.getElementById("userInput").focus();
+            document.getElementById("checkBtn").style.display = "block";
+        }, 8000);
+    }
+
+    function checkSequence() {
+        var userInput = document.getElementById("userInput").value.trim().split('').map(Number);
+
+        if (JSON.stringify(userInput) === JSON.stringify(sequence)) {
+            document.getElementById("result").textContent = "Correct! Next Level.";
+            currentLevel++;
+            document.getElementById("levelValue").textContent = currentLevel;
+            if (currentLevel <= levels) {
+                document.getElementById("userInput").style.display = "none";
+                document.getElementById("checkBtn").style.display = "none";
+                generateSequence();
+            } else {
+                document.getElementById("game").innerHTML = "<h2>Congratulations! You completed all levels.</h2>";
+            }
+        } else {
+            document.getElementById("result").textContent = "Incorrect. Try Again.";
+        }
+    }
+</script>
+<div>
+    <div class="wave"></div>
+    <div class="wave"></div>
+    <div class="wave"></div>
+    </div>
+</body>
+</html>

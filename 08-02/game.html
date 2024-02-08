@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Multi-Game Page</title>
+    <link rel="stylesheet" href=game.css>
+    <style>
+        
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background-color: aqua;
+        }
+
+        #game-tabs {
+            margin: 20px;
+        }
+
+        .tab {
+            display: inline-block;
+            padding: 10px 20px;
+            margin-right: 10px;
+            cursor: pointer;
+            background-color: #eee;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        .tab:hover {
+            background-color: #ddd;
+        }
+
+        .game-section {
+            display: none;
+            text-align: left;
+            max-width: 600px;
+            margin: 20px auto;
+        }
+
+    </style>
+   
+</head>
+<body>
+<div id="game-tabs">
+    <div class="tab" onclick="showGame('sudoku')">Sudoku</div>
+    <div class="tab" onclick="showGame('calculation')">Calculation</div>
+    <div class="tab" onclick="showGame('sequence')">Sequence</div>
+    <div class="tab" onclick="showGame('number-memory')">Number Memory Game</div>
+</div>
+<div id="sudoku" class="game-section">
+    <button><a href="sudoku.html">Start Sudoku Game</a></button>
+</div>
+<div id="calculation" class="game-section">
+<button><a href="cg.html">Start calculating some sums </a></button>
+</div>
+<div id="sequence" class="game-section">
+    <button><a href="sequence.html">start Sequence game</a></button>
+   </div>
+<div id="number-memory" class="game-section">
+    <button><a href="nmg.html">Start number memory game</a></button>
+</div>
+<script>
+    function showGame(gameId) {
+        // Hide all game sections
+        const gameSections = document.getElementsByClassName('game-section');
+        for (let i = 0; i < gameSections.length; i++) {
+            gameSections[i].style.display = 'none';
+        }
+        // Show the selected game section
+        document.getElementById(gameId).style.display = 'block';
+    }
+</script>
+</body>
+</html>
